@@ -11,9 +11,9 @@ interface AssistantAiService {
             Use the following pieces of context to answer the question at the end.
             Don't try to make up an answer.
             Use three sentences maximum. Keep the answer as concise as possible.
-            Context surrounded between triple backticks: ```{{information}}```
-            Question surrounded between triple backticks:: ```{{question}}```
             If the answer cannot be found in the provided context, write: "{{fallbackAnswer}}“
+            Context surrounded by triple backticks: ```{{information}}```
+            Question surrounded by triple backticks: ```{{question}}```
             """)
     String chat(@V("question") String userMessage, @V("information") String information, @V("fallbackAnswer") String fallbackAnswer);
 }

@@ -24,7 +24,7 @@ public class LangchainConfig {
     @Bean
     public EmbeddingStoreIngestor embeddingStoreIngestor(EmbeddingModel embeddingModel, EmbeddingStore<TextSegment> embeddingStore) {
         return EmbeddingStoreIngestor.builder()
-                .documentSplitter(DocumentSplitters.recursive(50, 10, new OpenAiTokenizer()))
+                .documentSplitter(DocumentSplitters.recursive(100, 20, new OpenAiTokenizer()))
                 .embeddingModel(embeddingModel)
                 .embeddingStore(embeddingStore)
                 .documentTransformer(doc -> {
@@ -38,4 +38,5 @@ public class LangchainConfig {
     public DocumentParser documentParser() {
         return new ApacheTikaDocumentParser();
     }
+
 }
