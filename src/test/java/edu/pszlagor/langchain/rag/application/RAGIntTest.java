@@ -32,7 +32,7 @@ public class RAGIntTest {
     private final AiAnswerValidator aiAnswerValidator;
 
     @Autowired
-    public RAGIntTest(DocumentService documentService, AssistantService assistantService, @Qualifier("vectorSimilarityAnswerValidator") AiAnswerValidator aiAnswerValidator) {
+    public RAGIntTest(DocumentService documentService, AssistantService assistantService, @Qualifier("LLMDrivenAnswerValidatorImpl") AiAnswerValidator aiAnswerValidator) {
         this.documentService = documentService;
         this.assistantService = assistantService;
         this.aiAnswerValidator = aiAnswerValidator;
