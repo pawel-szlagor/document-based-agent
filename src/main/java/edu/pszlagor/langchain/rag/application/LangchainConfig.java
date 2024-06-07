@@ -1,4 +1,4 @@
-package edu.pszlagor.langchain.rag.application.document;
+package edu.pszlagor.langchain.rag.application;
 
 import dev.langchain4j.data.document.DocumentParser;
 import dev.langchain4j.data.document.parser.apache.tika.ApacheTikaDocumentParser;
@@ -9,6 +9,7 @@ import dev.langchain4j.model.embedding.EmbeddingModel;
 import dev.langchain4j.model.openai.OpenAiTokenizer;
 import dev.langchain4j.store.embedding.EmbeddingStore;
 import dev.langchain4j.store.embedding.EmbeddingStoreIngestor;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 
@@ -22,9 +23,12 @@ public class LangchainConfig {
     }
 
     @Bean
-    public EmbeddingStoreIngestor embeddingStoreIngestor(EmbeddingModel embeddingModel, EmbeddingStore<TextSegment> embeddingStore) {
+    public EmbeddingStoreIngestor embeddingStoreIngestor(EmbeddingModel embeddingModel,
+                                                         EmbeddingStore<TextSegment> embeddingStore,
+                                                         @Value("${assistance.embedding-store.max-segment-size:100}") int maxSegmentSizeInTokens,
+                                                         @Value("${assistance.embedding-store.max-overlap-size:5}") int maxOverlapSizeInTokens) {
         return EmbeddingStoreIngestor.builder()
-                .documentSplitter(DocumentSplitters.recursive(100, 20, new OpenAiTokenizer()))
+                .documentSplitter(DocumentSplitters.recursive(maxSegmentSizeInTokens, maxOverlapSizeInTokens, new OpenAiTokenizer()))
                 .embeddingModel(embeddingModel)
                 .embeddingStore(embeddingStore)
                 .documentTransformer(doc -> {

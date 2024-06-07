@@ -6,9 +6,9 @@ import dev.langchain4j.model.embedding.AllMiniLmL6V2EmbeddingModel;
 import dev.langchain4j.model.embedding.EmbeddingModel;
 import dev.langchain4j.store.embedding.CosineSimilarity;
 import edu.pszlagor.langchain.rag.application.answervalidator.AiAnswerValidator;
-import org.springframework.boot.test.context.TestComponent;
+import org.springframework.stereotype.Component;
 
-@TestComponent
+@Component
 public class VectorSimilarityAnswerValidatorImpl implements AiAnswerValidator {
     private final EmbeddingModel embeddingModel = new AllMiniLmL6V2EmbeddingModel();
     private static final double minScore = 0.95;

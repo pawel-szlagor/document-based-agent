@@ -2,10 +2,11 @@ package edu.pszlagor.langchain.rag.adapter.http.document;
 
 import edu.pszlagor.langchain.rag.application.document.DocumentDto;
 import edu.pszlagor.langchain.rag.application.document.DocumentService;
+import edu.pszlagor.langchain.rag.application.document.exception.InvalidDocumentException;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
-import org.springframework.boot.test.context.SpringBootTest;
+import org.springframework.boot.test.autoconfigure.web.servlet.WebMvcTest;
 import org.springframework.boot.test.mock.mockito.MockBean;
 import org.springframework.mock.web.MockMultipartFile;
 import org.springframework.test.context.TestPropertySource;
@@ -21,8 +22,8 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 
 @AutoConfigureMockMvc
 @TestPropertySource(locations = {"/application-test.properties"})
-@SpringBootTest(webEnvironment = SpringBootTest.WebEnvironment.RANDOM_PORT)
-class DocumentControllerTest {
+@WebMvcTest(controllers = DocumentController.class)
+class DocumentControllerIntTest {
     @Autowired
     private MockMvc mvc;
 
@@ -44,6 +45,22 @@ class DocumentControllerTest {
                 .andExpect(content().string(expectedId));
         // then
         verify(documentService).saveDocument(eq(new DocumentDto(fileName, fileContent)));
+    }
+
+    @Test
+    void shouldResponseWithErrorMessageWhenServiceThrowsException() throws Exception {
+        // given
+        byte[] fileContent = "Some content".getBytes();
+        String fileName = "test.txt";
+        MockMultipartFile multipartFile = new MockMultipartFile("file", fileName,
+                "multipart/form-data", fileContent);
+        String errorMsg = "invalid doc";
+        when(documentService.saveDocument(any())).thenThrow(new InvalidDocumentException(errorMsg));
+        // when
+        // then
+        this.mvc.perform(multipart("/api/files/upload").file(multipartFile))
+                .andExpect(status().isBadRequest())
+                .andExpect(content().json("{\"type\":\"about:blank\",\"title\":\"Bad Request\",\"status\":400,\"detail\":\"invalid doc\",\"instance\":\"/api/files/upload\"}"));
     }
 
 }

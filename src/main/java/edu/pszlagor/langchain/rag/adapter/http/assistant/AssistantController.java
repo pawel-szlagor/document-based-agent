@@ -9,10 +9,10 @@ import org.springframework.web.bind.annotation.RestController;
 
 @RestController
 @RequestMapping("/api")
-public class AssistantController {
+class AssistantController {
     private final AssistantService assistantService;
 
-    public AssistantController(AssistantService assistantService) {
+    AssistantController(AssistantService assistantService) {
         this.assistantService = assistantService;
     }
 

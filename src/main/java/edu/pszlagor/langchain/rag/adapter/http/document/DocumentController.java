@@ -11,10 +11,10 @@ import org.springframework.web.multipart.MultipartFile;
 
 @RestController
 @RequestMapping("/api/files")
-public class DocumentController {
+class DocumentController {
     private final DocumentService documentService;
 
-    public DocumentController(DocumentService documentService) {
+    DocumentController(DocumentService documentService) {
         this.documentService = documentService;
     }
 

@@ -1,13 +1,12 @@
-package edu.pszlagor.langchain.rag.adapter.http;
+package edu.pszlagor.langchain.rag.adapter.http.assistant;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
-import edu.pszlagor.langchain.rag.adapter.http.assistant.ChatRequest;
 import edu.pszlagor.langchain.rag.application.assistant.AssistantService;
 import edu.pszlagor.langchain.rag.application.assistant.DocumentScopedQuestion;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
-import org.springframework.boot.test.context.SpringBootTest;
+import org.springframework.boot.test.autoconfigure.web.servlet.WebMvcTest;
 import org.springframework.boot.test.mock.mockito.MockBean;
 import org.springframework.http.MediaType;
 import org.springframework.test.context.TestPropertySource;
@@ -21,9 +20,9 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
 @AutoConfigureMockMvc
-@SpringBootTest
+@WebMvcTest(controllers = AssistantController.class)
 @TestPropertySource(locations = {"/application-test.properties"})
-class AssistantControllerTest {
+class AssistantControllerIntTest {
     @Autowired
     private MockMvc mvc;
     @MockBean
