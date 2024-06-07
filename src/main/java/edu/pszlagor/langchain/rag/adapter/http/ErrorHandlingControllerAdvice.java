@@ -15,7 +15,12 @@ import org.springframework.web.servlet.mvc.method.annotation.ResponseEntityExcep
 class ErrorHandlingControllerAdvice extends ResponseEntityExceptionHandler {
 
     @ExceptionHandler(value = {DocumentLoadingException.class, InvalidDocumentException.class})
-    public ErrorResponse handleMyCustomException(RuntimeException ex) {
+    public ErrorResponse handleDocumentExceptions(RuntimeException ex) {
+        return new ErrorResponseWithMessage(HttpStatus.BAD_REQUEST, ex.getMessage());
+    }
+
+    @ExceptionHandler(value = {RuntimeException.class})
+    public ErrorResponse handleOtherException(RuntimeException ex) {
         return new ErrorResponseWithMessage(HttpStatus.BAD_REQUEST, ex.getMessage());
     }
 

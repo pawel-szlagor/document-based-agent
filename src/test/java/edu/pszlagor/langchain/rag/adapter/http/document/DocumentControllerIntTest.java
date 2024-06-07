@@ -41,7 +41,7 @@ class DocumentControllerIntTest {
         when(documentService.saveDocument(any())).thenReturn(expectedId);
         // when
         this.mvc.perform(multipart("/api/files/upload").file(multipartFile))
-                .andExpect(status().isOk())
+                .andExpect(status().isCreated())
                 .andExpect(content().string(expectedId));
         // then
         verify(documentService).saveDocument(eq(new DocumentDto(fileName, fileContent)));
