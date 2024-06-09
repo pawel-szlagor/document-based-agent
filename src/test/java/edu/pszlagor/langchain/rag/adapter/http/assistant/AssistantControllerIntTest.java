@@ -39,7 +39,7 @@ class AssistantControllerIntTest {
         var expectedServiceArgument = new DocumentScopedQuestion(id, question);
         when(assistantService.chat(eq(expectedServiceArgument))).thenReturn(response);
         // when
-        this.mvc.perform(post("/api/chat")
+        this.mvc.perform(post("/api/v1/chat")
                         .content(objectMapper.writeValueAsString(new ChatRequest(id, question)))
                         .contentType(MediaType.APPLICATION_JSON_VALUE)
                 )

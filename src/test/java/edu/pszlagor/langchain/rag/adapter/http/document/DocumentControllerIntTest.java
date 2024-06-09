@@ -24,6 +24,7 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 @TestPropertySource(locations = {"/application-test.properties"})
 @WebMvcTest(controllers = DocumentController.class)
 class DocumentControllerIntTest {
+    private static final String PATH = "/api/v1/upload";
     @Autowired
     private MockMvc mvc;
 
@@ -40,7 +41,7 @@ class DocumentControllerIntTest {
                 "multipart/form-data", fileContent);
         when(documentService.saveDocument(any())).thenReturn(expectedId);
         // when
-        this.mvc.perform(multipart("/api/files/upload").file(multipartFile))
+        this.mvc.perform(multipart(PATH).file(multipartFile))
                 .andExpect(status().isCreated())
                 .andExpect(content().string(expectedId));
         // then
@@ -58,9 +59,9 @@ class DocumentControllerIntTest {
         when(documentService.saveDocument(any())).thenThrow(new InvalidDocumentException(errorMsg));
         // when
         // then
-        this.mvc.perform(multipart("/api/files/upload").file(multipartFile))
+        this.mvc.perform(multipart(PATH).file(multipartFile))
                 .andExpect(status().isBadRequest())
-                .andExpect(content().json("{\"type\":\"about:blank\",\"title\":\"Bad Request\",\"status\":400,\"detail\":\"invalid doc\",\"instance\":\"/api/files/upload\"}"));
+                .andExpect(content().json("{\"type\":\"about:blank\",\"title\":\"Bad Request\",\"status\":400,\"detail\":\"Provided document could not be processed correctly\",\"instance\":\"/api/v1/upload\"}"));
     }
 
 }

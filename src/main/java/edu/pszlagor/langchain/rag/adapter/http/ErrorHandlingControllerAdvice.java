@@ -16,12 +16,14 @@ class ErrorHandlingControllerAdvice extends ResponseEntityExceptionHandler {
 
     @ExceptionHandler(value = {DocumentLoadingException.class, InvalidDocumentException.class})
     public ErrorResponse handleDocumentExceptions(RuntimeException ex) {
-        return new ErrorResponseWithMessage(HttpStatus.BAD_REQUEST, ex.getMessage());
+        return new ErrorResponseWithMessage(HttpStatus.BAD_REQUEST,
+                "Provided document could not be processed correctly");
     }
 
     @ExceptionHandler(value = {RuntimeException.class})
     public ErrorResponse handleOtherException(RuntimeException ex) {
-        return new ErrorResponseWithMessage(HttpStatus.BAD_REQUEST, ex.getMessage());
+        return new ErrorResponseWithMessage(HttpStatus.INTERNAL_SERVER_ERROR,
+                "Server encountered an unexpected condition.");
     }
 
     public record ErrorResponseWithMessage(HttpStatusCode httpStatusCode, String message) implements ErrorResponse {

@@ -21,7 +21,7 @@ import java.io.IOException;
 
 import static org.assertj.core.api.Assertions.assertThat;
 
-@EnabledIf(value = "#{environment.getActiveProfiles()[0] == 'itest'}", loadContext = true)
+@EnabledIf(value = "#{T(org.apache.commons.lang3.ArrayUtils).contains(environment.getActiveProfiles(),'itest')}", loadContext = true)
 @TestPropertySource(properties = "langchain4j.open-ai.chat-model.temperature=0.0")
 @SpringBootTest
 public class RAGIntTest {
