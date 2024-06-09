@@ -26,6 +26,26 @@ class InMemoryEmbeddingStoreIntTest {
     }
 
     @Test
+    void shouldStoreEmbeddingsWhenBothDifferentIngestedDocumentsMatchQuery() {
+        // given
+        addToEmbeddingStore("The ball is blue", UUID.randomUUID());
+        UUID id = UUID.randomUUID();
+        String expectedMatchingText = "The ball is yellow";
+        addToEmbeddingStore(expectedMatchingText, id);
+        String question = "What is the color of the ball?";
+        EmbeddingSearchRequest searchRequest = EmbeddingSearchRequest.builder()
+                .filter(MetadataFilterBuilder.metadataKey("id").isEqualTo(id.toString()))
+                .queryEmbedding(embeddingModel.embed(question).content())
+                .maxResults(2)
+                .minScore(0.0)
+                .build();
+        // when
+        var matches = embeddingStore.search(searchRequest).matches();
+        // then
+        assertThat(matches).singleElement().matches(embedding -> embedding.embedded().text().equals(expectedMatchingText));
+    }
+
+    @Test
     void shouldFilterEmbeddingByIdWhenBothDifferentIngestedDocumentsMatchQuery() {
         // given
         addToEmbeddingStore("The ball is blue", UUID.randomUUID());
