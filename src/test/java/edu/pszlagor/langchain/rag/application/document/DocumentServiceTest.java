@@ -1,5 +1,7 @@
 package edu.pszlagor.langchain.rag.application.document;
 
+import dev.langchain4j.data.segment.TextSegment;
+import dev.langchain4j.store.embedding.EmbeddingStore;
 import jakarta.validation.ValidationException;
 import org.assertj.core.api.Assertions;
 import org.assertj.core.api.ThrowableAssert.ThrowingCallable;
@@ -9,6 +11,7 @@ import org.junit.jupiter.params.provider.NullAndEmptySource;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.boot.test.context.SpringBootTest;
+import org.springframework.boot.test.mock.mockito.MockBean;
 import org.springframework.core.io.Resource;
 import org.springframework.test.context.TestPropertySource;
 
@@ -21,6 +24,8 @@ import static org.assertj.core.api.Assertions.assertThatThrownBy;
 @SpringBootTest
 class DocumentServiceTest {
 
+    @MockBean
+    private EmbeddingStore<TextSegment> embeddingStore;
     private final DocumentService service;
     private final Resource inputFile;
 
