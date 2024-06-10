@@ -41,13 +41,13 @@ public class DocumentService {
         } catch (IOException exception) {
             throw new DocumentLoadingException(document.fileName(), exception);
         } catch (BlankDocumentException exception) {
-            throw new InvalidDocumentException("Document must not be blank!", exception);
+            throw new InvalidDocumentException("Document must not be blank.", exception);
         }
     }
 
     private void validateParsedDocument(Document parsedDocument) {
         if (parsedDocument.text().isEmpty()) {
-            throw new InvalidDocumentException("Document must contain some text.");
+            throw new InvalidDocumentException("Document must not be blank.");
         }
     }
 
