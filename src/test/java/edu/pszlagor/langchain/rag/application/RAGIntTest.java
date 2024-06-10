@@ -12,6 +12,7 @@ import org.junit.jupiter.params.provider.ValueSource;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.boot.test.context.SpringBootTest;
+import org.springframework.test.context.ActiveProfiles;
 import org.springframework.test.context.TestPropertySource;
 import org.springframework.test.context.junit.jupiter.EnabledIf;
 import org.springframework.util.ResourceUtils;
@@ -21,6 +22,7 @@ import java.io.IOException;
 
 import static org.assertj.core.api.Assertions.assertThat;
 
+@ActiveProfiles("itest")
 @EnabledIf(value = "#{T(org.apache.commons.lang3.ArrayUtils).contains(environment.getActiveProfiles(),'itest')}", loadContext = true)
 @TestPropertySource(properties = "langchain4j.open-ai.chat-model.temperature=0.0")
 @SpringBootTest
@@ -47,7 +49,7 @@ public class RAGIntTest {
         String question = "What are names of Charlie's friends excluding Charlie? Answer with their comma separated names in alphabetical order in the following format: name1,name2,name3,...";
         String response = assistantService.chat(new DocumentScopedQuestion(documentId, question));
         //then
-        assertThat(response).satisfies(res -> aiAnswerValidator.isValidAnswer(question, res, "Bella, Percy, Timmy"));
+        assertThat(response).matches(res -> aiAnswerValidator.isValidAnswer(question, res, "Bella,Percy,Timmy"));
     }
 
     @Test
