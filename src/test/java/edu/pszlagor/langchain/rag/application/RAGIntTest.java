@@ -12,7 +12,6 @@ import org.junit.jupiter.params.provider.ValueSource;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.boot.test.context.SpringBootTest;
-import org.springframework.test.context.ActiveProfiles;
 import org.springframework.test.context.TestPropertySource;
 import org.springframework.test.context.junit.jupiter.EnabledIf;
 import org.springframework.util.ResourceUtils;
@@ -22,7 +21,6 @@ import java.io.IOException;
 
 import static org.assertj.core.api.Assertions.assertThat;
 
-@ActiveProfiles("itest")
 @EnabledIf(value = "#{T(org.apache.commons.lang3.ArrayUtils).contains(environment.getActiveProfiles(),'itest')}", loadContext = true)
 @TestPropertySource(properties = "langchain4j.open-ai.chat-model.temperature=0.0")
 @SpringBootTest
